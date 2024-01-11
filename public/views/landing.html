@@ -1,0 +1,450 @@
+<!doctype html>
+<html lang="en" class="no-js">
+    <head>
+        <!-- Title and Icon -->
+
+        <title>Live Class a Free Secure Video Calls, Chat & Screen Sharing.</title>
+        <link rel="shortcut icon" href="../images/logo.png" />
+        <link rel="apple-touch-icon" href="../images/logo.png" />
+
+        <!-- Meta Information -->
+
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <meta
+            name="description"
+            content="Live Class powered by WebRTC, Real-time Simple Secure Fast video calls, chat and screen sharing capabilities in the browser, from your mobile or desktop."
+        />
+        <meta
+            name="keywords"
+            content="webrtc, self hosted, voip, sip, real-time communications, chat, messaging, meet, webrtc stun, webrtc turn, video meeting, video chat, video conference, multi video chat, multi video conference, peer to peer, p2p, rtc, alternative to, zoom, microsoft teams, google meet, jitsi, meeting"
+        />
+
+        <!-- https://ogp.me -->
+
+        <meta property="og:type" content="app-webrtc" />
+        <meta property="og:site_name" content="Live Class" />
+        <meta property="og:title" content="Click the link to make a call." />
+        <meta
+            property="og:description"
+            content="Live Class calling provides real-time HD quality and latency simply not available with traditional technology."
+        />
+        <meta property="og:image" content="https://media.viasacademy.com/document/logo.png" />
+        <meta property="og:url" content="https://live.viasacademy.in/" />
+
+        <!-- xss -->
+
+        <script src="https://rawgit.com/leizongmin/js-xss/master/dist/xss.js"></script>
+
+        <!-- https://cdnjs.com/libraries/font-awesome -->
+
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+
+        <!-- StyleSheet -->
+
+        <link rel="stylesheet" href="../css/snow.css" />
+        <link rel="stylesheet" href="../css/landing.css" />
+        <link rel="stylesheet" href="../css/newcall.css" />
+
+        <!-- JavaScripts -->
+
+        <script async src="../js/umami.js"></script>
+    </head>
+    <body class="has-animations">
+        <div id="snow-container"></div>
+        <div class="body-wrap">
+            <header class="site-header reveal-from-top">
+                <div class="container">
+                    <div class="site-header-inner">
+                        <div class="brand">
+                            <div class="m-0">
+                                <a href="/">
+                                    <!-- <img src="../images/logo.svg" alt="Live Class" width="32" height="32" /> -->
+                                    <img
+                                    src="../images/logo.png"
+                                    alt="Live Class"
+                                    width="96"
+                                    height="auto"
+                                    style="margin-top: 80px; border-radius: 50%;"
+                                    />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <main class="site-content">
+                <section class="hero section illustration-section-01">
+                    <div class="container">
+                        <div class="hero-inner section-inner">
+                            <div class="split-wrap invert-mobile">
+                                <div class="split-item">
+                                    <div class="hero-content split-item-content center-content-mobile">
+                                        <h1 class="mt-32 mb-16 reveal-from-bottom" data-reveal-delay="150">
+                                            Live Class<br />Free browser based Real-time video calls.<br />
+                                            Simple, Secure, Fast.
+                                        </h1>
+                                        <p class="mt-0 mb-32 reveal-from-bottom" data-reveal-delay="300">
+                                            Start your next video call with a single click. No download, plug-in, or
+                                            login is required. Just get straight to talking, messaging, and sharing your
+                                            screen.
+                                        </p>
+                                    </div>
+                                    <style>
+                                        @media (min-width: 641px) {
+                                            .hero .split-wrap .split-item {
+                                                min-height: 492px;
+                                            }
+                                        }
+                                    </style>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="cta section center-content-mobile reveal-from-bottom">
+                    <div class="container">
+                        <div class="cta-inner section-inner cta-split br-12">
+                            <div class="cta-slogan">
+                                <h3 class="m-0">
+                                    Pick a room name.<br />
+                                    How about this one?
+                                </h3>
+                            </div>
+                            <div class="cta-action">
+                                <div class="mb-0">
+                                    <label class="form-label screen-reader" for="roomName">Live Class</label>
+                                    <div class="form-group-desktop">
+                                        <input
+                                            id="roomName"
+                                            class="form-input"
+                                            type="text"
+                                            value="Live Class"
+                                            maxlength="32"
+                                            style="border-radius: 6px"
+                                        />
+                                        <button
+                                            id="genRoomButton"
+                                            class="button button-primary br-6 mr-8 mb-8 fas fa-arrows-rotate"
+                                            onclick="genRoom()"
+                                        ></button>
+                                        <button
+                                            id="joinRoomButton"
+                                            class="button button-primary br-6 pulse"
+                                            onclick="joinRoom()"
+                                        >
+                                            Join Room
+                                        </button>
+                                        <script>
+                                            document.getElementById('roomName').onkeyup = (e) => {
+                                                if (e.keyCode === 13) {
+                                                    e.preventDefault();
+                                                    joinRoom();
+                                                }
+                                            };
+                                            function genRoom() {
+                                                document.getElementById('roomName').value = getUUID4();
+                                            }
+                                            function getUUID4() {
+                                                return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, (c) =>
+                                                    (
+                                                        c ^
+                                                        (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (c / 4)))
+                                                    ).toString(16),
+                                                );
+                                            }
+                                            function joinRoom() {
+                                                const roomName = filterXSS(document.getElementById('roomName').value);
+                                                if (roomName) {
+                                                    window.location.href = '/join/' + roomName;
+                                                    window.localStorage.lastRoom = roomName;
+                                                } else {
+                                                    alert('Room name empty!\nPlease pick a room name.');
+                                                }
+                                            }
+                                        </script>
+                                    </div>
+                                </div>
+                                <div id="lastRoomContainer" class="last-room">
+                                    <span>Your recent room:</span>
+                                    <a id="lastRoom"></a>
+                                </div>
+                                <script>
+                                    const lastRoomContainer = document.getElementById('lastRoomContainer');
+                                    const lastRoom = document.getElementById('lastRoom');
+                                    const lastRoomName = window.localStorage.lastRoom
+                                        ? window.localStorage.lastRoom
+                                        : '';
+                                    if (lastRoomName) {
+                                        lastRoomContainer.style.display = 'inline-flex';
+                                        lastRoom.setAttribute('href', '/join/' + lastRoomName);
+                                        lastRoom.innerText = lastRoomName;
+                                    }
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="features-tiles section center-content mt-32">
+                    <div class="container">
+                        <div class="features-tiles-inner section-inner has-top-divider">
+                            <div class="section-header">
+                                <div class="container-xs reveal-from-bottom" data-reveal-delay="650">
+                                    <h2 class="mt-0 mb-16">
+                                        Unlimited number of conference rooms without call time limitation
+                                    </h2>
+                                    <p class="m-0">
+                                        Live Class is built radically differently. We left behind slow bulky servers,
+                                        opting for peer-to-peer calling. We engineered a platform with maximum video
+                                        quality lowest latency that makes your calls crystal clear.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="tiles-wrap">
+                                <div class="tiles-item reveal-from-right">
+                                    <div class="tiles-item-inner">
+                                        <div class="features-tiles-item-header">
+                                            <div class="features-tiles-item-image mb-16">
+                                                <img
+                                                    class="wh-200-150"
+                                                    src="../svg/screen_sharing.svg"
+                                                    alt="Screen Sharing"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="features-tiles-item-content">
+                                            <h4 class="mt-0 mb-8">Screen Sharing</h4>
+                                            <p class="m-0 text-sm">
+                                                Share your screen, application window, present your documents, slides
+                                                and more. Up to 4k resolution and speed up to 60fps.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tiles-item reveal-from-left">
+                                    <div class="tiles-item-inner">
+                                        <div class="features-tiles-item-header">
+                                            <div class="features-tiles-item-image mb-16">
+                                                <img
+                                                    class="wh-200-150"
+                                                    src="../svg/webcam_streaming.svg"
+                                                    alt="WebCam Streaming"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="features-tiles-item-content">
+                                            <h4 class="mt-0 mb-8">WebCam Streaming</h4>
+                                            <p class="m-0 text-sm">
+                                                Having the webcam on, allows participants to make a deeper connection
+                                                with you. Up to 4k resolution and speed up to 60fps.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tiles-item reveal-from-right">
+                                    <div class="tiles-item-inner">
+                                        <div class="features-tiles-item-header">
+                                            <div class="features-tiles-item-image mb-16">
+                                                <img class="wh-200-150" src="../svg/webcam_chat.svg" alt="Chat Room" />
+                                            </div>
+                                        </div>
+                                        <div class="features-tiles-item-content">
+                                            <h4 class="mt-0 mb-8">Chat Room</h4>
+                                            <p class="m-0 text-sm">
+                                                Chat with others in the meeting, either public chat or private, save the
+                                                meeting messages. An integrated emoji picker to show your feeling.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tiles-item reveal-from-left">
+                                    <div class="tiles-item-inner">
+                                        <div class="features-tiles-item-header">
+                                            <div class="features-tiles-item-image mb-16">
+                                                <img
+                                                    class="wh-200-150"
+                                                    src="../svg/recording_meeting.svg"
+                                                    alt="Meeting Recording"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="features-tiles-item-content">
+                                            <h4 class="mt-0 mb-8">Meeting Recording</h4>
+                                            <p class="m-0 text-sm">
+                                                Record your Screen, WebCam and Audio. Save it for use in the future or
+                                                to share with others.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tiles-item reveal-from-right">
+                                    <div class="tiles-item-inner">
+                                        <div class="features-tiles-item-header">
+                                            <div class="features-tiles-item-image mb-16">
+                                                <img
+                                                    class="wh-200-150"
+                                                    src="../svg/interactive_whitboard.svg"
+                                                    alt="Interactive Whiteboard"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="features-tiles-item-content">
+                                            <h4 class="mt-0 mb-8">Interactive Whiteboard</h4>
+                                            <p class="m-0 text-sm">
+                                                Advanced collaborative whiteboard to draw and explain your concepts to
+                                                the other participants in the meeting.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tiles-item reveal-from-left">
+                                    <div class="tiles-item-inner">
+                                        <div class="features-tiles-item-header">
+                                            <div class="features-tiles-item-image mb-16">
+                                                <img
+                                                    class="wh-200-150"
+                                                    src="../svg/file_sharing.svg"
+                                                    alt="File Sharing"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="features-tiles-item-content">
+                                            <h4 class="mt-0 mb-8">File Sharing</h4>
+                                            <p class="m-0 text-sm">
+                                                Share any types of files to all participants in the meeting, in total
+                                                security, thanks to Datagram Transport Layer Security (DTLS).
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tiles-item reveal-from-right">
+                                    <div class="tiles-item-inner">
+                                        <div class="features-tiles-item-header">
+                                            <div class="features-tiles-item-image mb-16">
+                                                <img
+                                                    class="wh-200-150"
+                                                    src="../svg/total_privacy.svg"
+                                                    alt="Total Privacy"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="features-tiles-item-content">
+                                            <h4 class="mt-0 mb-8">Total Privacy</h4>
+                                            <p class="m-0 text-sm">
+                                                Data stays between you and your participants. Live Class doesn't collect
+                                                or share personal information. It's built for privacy first.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="tiles-item reveal-from-left">
+                                    <div class="tiles-item-inner">
+                                        <div class="features-tiles-item-header">
+                                            <div class="features-tiles-item-image mb-16">
+                                                <img
+                                                    class="wh-200-150"
+                                                    src="../svg/maximum_security.svg"
+                                                    alt="Maximum Security"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="features-tiles-item-content">
+                                            <h4 class="mt-0 mb-8">Maximum Security</h4>
+                                            <p class="m-0 text-sm">
+                                                End-to-end state-of-the-art encryption means your participants are
+                                                exactly that. Your calls.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="team section center-content">
+                    <div class="container">
+                        <div class="team-inner section-inner has-top-divider">
+                            <div class="section-header center-content reveal-from-bottom">
+                                <div class="container-xs">
+                                    <h2 class="mt-0 mb-16">Supported Browsers</h2>
+                                </div>
+                            </div>
+                            <div class="tiles-wrap">
+                                <div class="tiles-item reveal-from-bottom">
+                                    <div class="tiles-item-inner">
+                                        <div class="team-item-header">
+                                            <div class="team-item-image mb-24">
+                                                <img
+                                                    src="../images/browsers.png"
+                                                    alt="Supported Browsers"
+                                                    width="auto"
+                                                    height="auto"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="team-item-content">
+                                            <h5 class="team-item-name mt-0 mb-4">
+                                                Chrome, Edge, Firefox, Opera, Safari, Brave and more.
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+               
+
+                <section class="section">
+                    <div class="container">
+                        <div class="section-inner has-top-divider">
+                            <div class="container-xs">
+                                <div class="section-header center-content">
+                                    <h2 class="m-0">Try an easier, more secure way of calling.</h2>
+                                </div>
+                                <div class="center-content">
+                                    <a
+                                        class="button button-primary button-wide-mobile br-6 pulse"
+                                        style="
+                                            border: 0;
+                                            background: linear-gradient(100deg, #376df9 0, #ff5fa0 75%, #ffc55a 100%);
+                                        "
+                                        href="/newcall"
+                                        >Try now</a
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+              
+
+              
+
+               
+            </main>
+
+           
+        </div>
+
+        <script defer src="../js/snow.js"></script>
+        <script defer src="../js/landing.js"></script>
+        <script defer src="../js/newRoom.js"></script>
+        <script async defer src="https://buttons.github.io/buttons.js"></script>
+    </body>
+</html>
