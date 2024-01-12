@@ -5,6 +5,7 @@
 // Signaling server URL
 const signalingServer = getSignalingServer();
 
+
 // This room
 const myRoomId = getId('myRoomId');
 const roomId = getRoomId();
@@ -6040,26 +6041,87 @@ function handleMediaRecorderData(event) {
  * Handle Media Recorder onstop event
  * @param {object} event of media recorder
  */
-function handleMediaRecorderStop(event) {
-    console.log('MediaRecorder stopped: ', event);
-    console.log('MediaRecorder Blobs: ', recordedBlobs);
-    stopRecordingTimer();
-    emitPeersAction('recStop');
-    emitPeerStatus('rec', false);
-    isStreamRecording = false;
-    myVideoParagraph.innerText = myPeerName + ' (me)';
-    if (isRecScreenStream) {
-        recScreenStream.getTracks().forEach((track) => {
-            if (track.kind === 'video') track.stop();
-        });
-        isRecScreenStream = false;
+// function handleMediaRecorderStop(event) {
+//     console.log('MediaRecorder stopped: ', event);
+//     console.log('MediaRecorder Blobs: ', recordedBlobs);
+//     stopRecordingTimer();
+//     emitPeersAction('recStop');
+//     emitPeerStatus('rec', false);
+//     isStreamRecording = false;
+//     myVideoParagraph.innerText = myPeerName + ' (me)';
+//     if (isRecScreenStream) {
+//         recScreenStream.getTracks().forEach((track) => {
+//             if (track.kind === 'video') track.stop();
+//         });
+//         isRecScreenStream = false;
+//     }
+//     recordStreamBtn.style.setProperty('color', '#000');
+//     downloadRecordedStream();
+//     setTippy(recordStreamBtn, 'Start recording', placement);
+//     if (isMobileDevice) elemDisplay(swapCameraBtn, true, 'block');
+//     playSound('recStop');
+// }
+async function handleMediaRecorderStop(event) {
+    try {
+        console.log('MediaRecorder stopped: ', event);
+        console.log('MediaRecorder Blobs: ', recordedBlobs);
+        stopRecordingTimer();
+        emitPeersAction('recStop');
+        emitPeerStatus('rec', false);
+        isStreamRecording = false;
+        myVideoParagraph.innerText = myPeerName + ' (me)';
+        
+        if (isRecScreenStream) {
+            recScreenStream.getTracks().forEach((track) => {
+                if (track.kind === 'video') track.stop();
+            });
+            isRecScreenStream = false;
+        }
+        
+        recordStreamBtn.style.setProperty('color', '#000');
+        setTippy(recordStreamBtn, 'Start recording', placement);
+        
+        if (isMobileDevice) elemDisplay(swapCameraBtn, true, 'block');
+        
+        playSound('recStop');
+
+        // Save the recording to the server
+        await saveRecordingToServer();
+    } catch (error) {
+        console.error('Error handling recording:', error);
     }
-    recordStreamBtn.style.setProperty('color', '#000');
-    downloadRecordedStream();
-    setTippy(recordStreamBtn, 'Start recording', placement);
-    if (isMobileDevice) elemDisplay(swapCameraBtn, true, 'block');
-    playSound('recStop');
 }
+
+async function saveRecordingToServer() {
+    try {
+        const dateTime = getDataTimeString();
+        const type = recordedBlobs[0]?.type?.includes('mp4') ? 'mp4' : 'webm';
+        const blob = new Blob(recordedBlobs, { type: `video/${type}` });
+
+        const formData = new FormData();
+        formData.append('recording', blob, `${dateTime}-REC.${type}`);
+
+        const response = await fetch('https://live.viasacademy.in/upload', {
+            method: 'POST',
+            body: formData,
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to upload recording. Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Server response:', data);
+    } catch (error) {
+        console.error("Error handling file upload:", error);
+    res.status(500).json({
+      error: `Internal Server Error - File Handling: ${error.message}`,
+    });
+    }
+}
+
+  
+
 
 /**
  * Stop recording

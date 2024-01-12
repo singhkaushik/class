@@ -18,7 +18,7 @@ const packageJson = require('../../package.json');
 
 const domain = process.env.HOST ;
 const isHttps = process.env.HTTPS == 'true';
-const port = process.env.PORT || 3000; 
+const port = process.env.PORT || 3010; 
 const host = `http${isHttps ? 's' : ''}://${domain}:${port}`;
 
 let io, server, authHost;
